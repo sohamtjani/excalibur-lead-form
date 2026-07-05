@@ -126,10 +126,10 @@ function App() {
                   Tell us what you need
                 </span>
                 <h1 className="mt-6 max-w-3xl text-5xl font-semibold leading-[0.93] tracking-[-0.05em] text-slate-950 sm:text-7xl">
-                  Start the conversation with Excalibur.
+                  Let&apos;s Audit your Opportunities, for Free
                 </h1>
                 <p className="mt-6 max-w-2xl text-base leading-7 text-slate-600 sm:text-lg">
-                  Share your business details and a short note about what you are looking for. If someone sent you here personally, their referral code can stay attached automatically.
+                  The Excalibur Team will personally audit your business and the growth opportunities present. You will be contacted within 48h, unless otherwise noted.
                 </p>
               </div>
 
