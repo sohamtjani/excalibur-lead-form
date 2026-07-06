@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useState } from 'react';
-import { ArrowRight, CheckCircle2, LoaderCircle, ShieldCheck, Sparkles } from 'lucide-react';
+import { ArrowRight, CheckCircle2, LoaderCircle, ShieldCheck } from 'lucide-react';
 import { z } from 'zod';
 import { supabase, supabaseConfigError } from './lib/supabase';
+import excaliburLogo from './assets/excalibur-logo.png';
 
 const leadFormSchema = z.object({
   businessName: z.string().min(2, 'Enter the business name.'),
@@ -103,9 +104,11 @@ function App() {
       <div className="relative mx-auto flex min-h-[calc(100vh-3rem)] max-w-6xl flex-col gap-8">
         <nav className="panel flex items-center justify-between rounded-full px-5 py-3">
           <div className="flex items-center gap-3">
-            <div className="flex h-11 w-11 items-center justify-center rounded-full bg-blue-600 text-white shadow-soft">
-              <Sparkles className="h-5 w-5" />
-            </div>
+            <img
+              src={excaliburLogo}
+              alt="Excalibur"
+              className="h-11 w-auto rounded-xl object-contain sm:h-12"
+            />
             <div>
               <p className="text-lg font-semibold tracking-[-0.03em] text-slate-950">Excalibur</p>
               <p className="text-[11px] uppercase tracking-[0.32em] text-slate-500">Interest Form</p>
