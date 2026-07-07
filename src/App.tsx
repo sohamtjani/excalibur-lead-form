@@ -6,12 +6,29 @@ import excaliburLogo from './assets/excalibur-logo.png';
 
 const helpOptions = ['Website', 'Google/SEO', 'Calls/Leads', 'Not sure'] as const;
 
+function normalizePresenceLink(value: string) {
+  const trimmed = value.trim();
+
+  if (!trimmed) {
+    return trimmed;
+  }
+
+  if (/^https?:\/\//i.test(trimmed)) {
+    return trimmed;
+  }
+
+  return `https://${trimmed}`;
+}
+
 const leadFormSchema = z.object({
   businessName: z.string().min(2, 'Enter the business name.'),
   contactName: z.string().min(2, 'Enter the contact name.'),
   email: z.string().email('Use a valid email address.'),
   phone: z.string().min(7, 'Enter a valid phone number.'),
-  presenceLink: z.string().min(3, 'Add your website, Google Business Profile, or Facebook page link.'),
+  presenceLink: z
+    .string()
+    .min(3, 'Add your website, Google Business Profile, or Facebook page link.')
+    .transform(normalizePresenceLink),
   helpNeeded: z.string().refine((value) => helpOptions.includes(value as (typeof helpOptions)[number]), {
     message: 'Select what you most need help with.',
   }),
@@ -200,7 +217,6 @@ function App() {
               </div>
               <FormInput
                 label="Current website, Google, or Facebook link"
-                type="url"
                 value={form.presenceLink}
                 onChange={(value) => setForm((current) => ({ ...current, presenceLink: value }))}
                 required
