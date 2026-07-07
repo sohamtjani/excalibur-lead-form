@@ -1,16 +1,21 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { ArrowRight, CheckCircle2, LoaderCircle, ShieldCheck } from 'lucide-react';
 import { z } from 'zod';
 import { supabase, supabaseConfigError } from './lib/supabase';
 import excaliburLogo from './assets/excalibur-logo.png';
+
+const helpOptions = ['Website', 'Google/SEO', 'Calls/Leads', 'Not sure'] as const;
 
 const leadFormSchema = z.object({
   businessName: z.string().min(2, 'Enter the business name.'),
   contactName: z.string().min(2, 'Enter the contact name.'),
   email: z.string().email('Use a valid email address.'),
   phone: z.string().min(7, 'Enter a valid phone number.'),
+  presenceLink: z.string().min(3, 'Add your website, Google Business Profile, or Facebook page link.'),
+  helpNeeded: z.string().refine((value) => helpOptions.includes(value as (typeof helpOptions)[number]), {
+    message: 'Select what you most need help with.',
+  }),
   referralCode: z.string().optional(),
-  notes: z.string().optional(),
   website: z.string().max(0, 'Leave this field blank.'),
 });
 
@@ -28,16 +33,11 @@ function App() {
     contactName: '',
     email: '',
     phone: '',
+    presenceLink: '',
+    helpNeeded: '',
     referralCode: queryReferralCode,
-    notes: '',
     website: '',
   });
-
-  useEffect(() => {
-    if (queryReferralCode) {
-      setForm((current) => ({ ...current, referralCode: queryReferralCode }));
-    }
-  }, [queryReferralCode]);
 
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
@@ -65,8 +65,10 @@ function App() {
         contact_info: {
           email: parsed.email,
           phone: parsed.phone,
+          presence_link: parsed.presenceLink,
+          help_needed: parsed.helpNeeded,
         },
-        notes: parsed.notes || null,
+        notes: `Audit focus: ${parsed.helpNeeded}\nCurrent link: ${parsed.presenceLink}`,
         submitted_referral_code: parsed.referralCode || null,
       });
 
@@ -76,14 +78,15 @@ function App() {
 
       window.localStorage.setItem('excalibur_public_lead_form_last_submission', String(Date.now()));
       setSubmitted(true);
-      setMessage('Your request was received. Excalibur will follow up soon.');
+      setMessage('Your request was received. Your personalized audit will be sent within 48 hours.');
       setForm({
         businessName: '',
         contactName: '',
         email: '',
         phone: '',
+        presenceLink: '',
+        helpNeeded: '',
         referralCode: parsed.referralCode || '',
-        notes: '',
         website: '',
       });
     } catch (caught) {
@@ -126,13 +129,13 @@ function App() {
             <div className="relative flex h-full flex-col justify-between gap-10">
               <div className="max-w-3xl">
                 <span className="inline-flex rounded-full border border-sky-200 bg-white/85 px-4 py-2 text-xs font-semibold uppercase tracking-[0.28em] text-slate-600">
-                  Tell us what you need
+                  Free growth audit
                 </span>
                 <h1 className="mt-6 max-w-3xl text-5xl font-semibold leading-[0.93] tracking-[-0.05em] text-slate-950 sm:text-7xl">
-                  Let&apos;s Audit your Opportunities, for Free
+                  Get a free audit of your website and online presence
                 </h1>
                 <p className="mt-6 max-w-2xl text-base leading-7 text-slate-600 sm:text-lg">
-                  The Excalibur Team will personally audit your business and the growth opportunities present. You will be contacted within 48h, unless otherwise noted.
+                  Get a personalized report from the Excalibur team within 48 hours, with clear findings on what is helping or hurting your local lead flow.
                 </p>
               </div>
 
@@ -160,10 +163,10 @@ function App() {
             <div>
               <p className="text-sm font-semibold uppercase tracking-[0.26em] text-slate-500">Get in touch</p>
               <h2 className="mt-3 text-4xl font-semibold tracking-[-0.04em] text-slate-950">
-                Business interest form
+                Request your free audit
               </h2>
               <p className="mt-4 text-sm leading-6 text-slate-600">
-                Fill this out once and your request will be logged for review.
+                Share a few details and we&apos;ll review your current presence, then send back personalized recommendations.
               </p>
             </div>
 
@@ -172,11 +175,13 @@ function App() {
                 label="Business name"
                 value={form.businessName}
                 onChange={(value) => setForm((current) => ({ ...current, businessName: value }))}
+                required
               />
               <FormInput
                 label="Contact name"
                 value={form.contactName}
                 onChange={(value) => setForm((current) => ({ ...current, contactName: value }))}
+                required
               />
               <div className="grid gap-4 sm:grid-cols-2">
                 <FormInput
@@ -184,29 +189,29 @@ function App() {
                   type="email"
                   value={form.email}
                   onChange={(value) => setForm((current) => ({ ...current, email: value }))}
+                  required
                 />
                 <FormInput
                   label="Phone"
                   value={form.phone}
                   onChange={(value) => setForm((current) => ({ ...current, phone: value }))}
+                  required
                 />
               </div>
               <FormInput
-                label="Referral code (optional)"
-                value={form.referralCode}
-                onChange={(value) => setForm((current) => ({ ...current, referralCode: value.toUpperCase() }))}
+                label="Current website, Google, or Facebook link"
+                type="url"
+                value={form.presenceLink}
+                onChange={(value) => setForm((current) => ({ ...current, presenceLink: value }))}
+                required
               />
-              <label className="block text-sm text-slate-600">
-                <span className="mb-2 block text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">
-                  Notes
-                </span>
-                <textarea
-                  value={form.notes}
-                  onChange={(event) => setForm((current) => ({ ...current, notes: event.target.value }))}
-                  rows={5}
-                  className="w-full rounded-[1.15rem] border border-slate-200 bg-white/88 px-4 py-3.5 text-slate-950 outline-none transition placeholder:text-slate-300 focus:border-blue-400 focus:ring-4 focus:ring-blue-100"
-                />
-              </label>
+              <FormSelect
+                label="What do you most need help with?"
+                value={form.helpNeeded}
+                onChange={(value) => setForm((current) => ({ ...current, helpNeeded: value }))}
+                options={helpOptions}
+                required
+              />
 
               <input
                 type="text"
@@ -224,7 +229,7 @@ function App() {
                 className="flex w-full items-center justify-center gap-2 rounded-[1.35rem] bg-slate-950 px-5 py-4 text-sm font-semibold text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-70"
               >
                 {loading ? <LoaderCircle className="h-4 w-4 animate-spin" /> : <ArrowRight className="h-4 w-4" />}
-                {submitted ? 'Request sent' : 'Send interest form'}
+                {submitted ? 'Request sent' : 'Get My Free Audit'}
               </button>
 
               {message ? (
@@ -234,6 +239,18 @@ function App() {
                 />
               ) : null}
             </form>
+
+            <div className="mt-6 rounded-[1.5rem] border border-white/70 bg-white/70 p-5 text-sm text-slate-600 shadow-[0_14px_35px_rgba(83,112,189,0.08)]">
+              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">What your audit includes</p>
+              <ul className="mt-3 space-y-2 pl-5 text-sm leading-6 text-slate-700">
+                <li>Website review for clarity, trust, and conversion friction</li>
+                <li>Google presence check for visibility, reviews, and local SEO basics</li>
+                <li>Call-flow analysis to spot lead handling and response gaps</li>
+              </ul>
+              <p className="mt-4 text-sm leading-6 text-slate-600">
+                Your information is only used to prepare and deliver the audit. No spam and no sharing.
+              </p>
+            </div>
           </section>
         </section>
       </div>
@@ -266,11 +283,13 @@ function FormInput({
   value,
   onChange,
   type = 'text',
+  required = false,
 }: {
   label: string;
   value: string;
   onChange: (value: string) => void;
   type?: string;
+  required?: boolean;
 }) {
   return (
     <label className="block text-sm text-slate-600">
@@ -281,8 +300,46 @@ function FormInput({
         type={type}
         value={value}
         onChange={(event) => onChange(event.target.value)}
+        required={required}
         className="w-full rounded-[1.15rem] border border-slate-200 bg-white/88 px-4 py-3.5 text-slate-950 outline-none transition placeholder:text-slate-300 focus:border-blue-400 focus:ring-4 focus:ring-blue-100"
       />
+    </label>
+  );
+}
+
+function FormSelect({
+  label,
+  value,
+  onChange,
+  options,
+  required = false,
+}: {
+  label: string;
+  value: string;
+  onChange: (value: string) => void;
+  options: readonly string[];
+  required?: boolean;
+}) {
+  return (
+    <label className="block text-sm text-slate-600">
+      <span className="mb-2 block text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">
+        {label}
+      </span>
+      <select
+        value={value}
+        onChange={(event) => onChange(event.target.value)}
+        required={required}
+        className="w-full rounded-[1.15rem] border border-slate-200 bg-white/88 px-4 py-3.5 text-slate-950 outline-none transition focus:border-blue-400 focus:ring-4 focus:ring-blue-100"
+      >
+        <option value="" disabled>
+          Select one
+        </option>
+        {options.map((option) => (
+          <option key={option} value={option}>
+            {option}
+          </option>
+        ))}
+      </select>
     </label>
   );
 }
