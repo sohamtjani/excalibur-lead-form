@@ -1,7 +1,6 @@
 import { useMemo, useState } from 'react';
 import { ArrowRight, CheckCircle2, CircleDollarSign, LoaderCircle, ShieldCheck, Sparkles, TrendingUp } from 'lucide-react';
 import { z } from 'zod';
-import { supabase, supabaseConfigError } from './lib/supabase';
 import excaliburLogo from './assets/excalibur-logo.png';
 
 const helpOptions = [
@@ -50,7 +49,7 @@ function App() {
 
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-  const [message, setMessage] = useState<string | null>(supabaseConfigError);
+  const [message, setMessage] = useState<string | null>(null);
   const [form, setForm] = useState({
     businessName: '',
     contactName: '',
@@ -66,11 +65,6 @@ function App() {
     event.preventDefault();
     setMessage(null);
 
-    if (!supabase) {
-      setMessage('This page is missing its Supabase connection.');
-      return;
-    }
-
     const lastSubmission = Number(window.localStorage.getItem('excalibur_public_lead_form_last_submission') || '0');
     if (Date.now() - lastSubmission < 60_000) {
       setMessage('Please wait a minute before sending another request.');
@@ -82,21 +76,19 @@ function App() {
     try {
       const parsed = leadFormSchema.parse(form);
 
-      const { error } = await supabase.from('leads').insert({
-        business_name: parsed.businessName,
-        contact_name: parsed.contactName,
-        contact_info: {
-          email: parsed.email,
-          phone: parsed.phone,
-          presence_link: parsed.presenceLink,
-          help_needed: parsed.helpNeeded,
-        },
-        notes: `Audit focus: ${parsed.helpNeeded}\nCurrent link: ${parsed.presenceLink}`,
-        submitted_referral_code: parsed.referralCode || null,
+      const response = await fetch('/api/lead', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(parsed),
       });
 
-      if (error) {
-        throw error;
+      if (!response.ok) {
+        const payload: unknown = await response.json().catch(() => null);
+        const errorMessage =
+          typeof payload === 'object' && payload !== null && 'error' in payload && typeof payload.error === 'string'
+            ? payload.error
+            : 'We could not send your request. Please try again.';
+        throw new Error(errorMessage);
       }
 
       window.localStorage.setItem('excalibur_public_lead_form_last_submission', String(Date.now()));
