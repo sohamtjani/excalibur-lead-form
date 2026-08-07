@@ -1,10 +1,16 @@
 import { useMemo, useState } from 'react';
-import { ArrowRight, CheckCircle2, LoaderCircle, ShieldCheck } from 'lucide-react';
+import { ArrowRight, CheckCircle2, CircleDollarSign, LoaderCircle, ShieldCheck, Sparkles } from 'lucide-react';
 import { z } from 'zod';
 import { supabase, supabaseConfigError } from './lib/supabase';
 import excaliburLogo from './assets/excalibur-logo.png';
 
-const helpOptions = ['Website', 'Google/SEO', 'Calls/Leads', 'Not sure'] as const;
+const helpOptions = [
+  'I need a new website',
+  'My current website is outdated',
+  'I pay monthly but nothing gets updated',
+  'My website is not bringing in leads',
+  'I am not sure',
+] as const;
 
 function normalizePresenceLink(value: string) {
   const trimmed = value.trim();
@@ -95,7 +101,7 @@ function App() {
 
       window.localStorage.setItem('excalibur_public_lead_form_last_submission', String(Date.now()));
       setSubmitted(true);
-      setMessage('Your request was received. Your personalized audit will be sent within 48 hours.');
+      setMessage('You are on the list. We will be in touch about your $350 website within 48 hours.');
       setForm({
         businessName: '',
         contactName: '',
@@ -131,11 +137,11 @@ function App() {
             />
             <div>
               <p className="text-lg font-semibold tracking-[-0.03em] text-slate-950">Excalibur</p>
-              <p className="text-[11px] uppercase tracking-[0.32em] text-slate-500">Interest Form</p>
+              <p className="text-[11px] uppercase tracking-[0.32em] text-slate-500">Small business websites</p>
             </div>
           </div>
           <span className="rounded-full border border-sky-200 bg-white/70 px-4 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-slate-600">
-            Direct inquiries
+            30 businesses only
           </span>
         </nav>
 
@@ -146,31 +152,35 @@ function App() {
             <div className="relative flex h-full flex-col justify-between gap-10">
               <div className="max-w-3xl">
                 <span className="inline-flex rounded-full border border-sky-200 bg-white/85 px-4 py-2 text-xs font-semibold uppercase tracking-[0.28em] text-slate-600">
-                  Free growth audit
+                  One-time website offer
                 </span>
                 <h1 className="mt-6 max-w-3xl text-5xl font-semibold leading-[0.93] tracking-[-0.05em] text-slate-950 sm:text-7xl">
-                  Get a free audit of your website and online presence
+                  A website that works for your business. <span className="text-blue-600">$350, once.</span>
                 </h1>
                 <p className="mt-6 max-w-2xl text-base leading-7 text-slate-600 sm:text-lg">
-                  Get a personalized report from the Excalibur team within 48 hours, with clear findings on what is helping or hurting your local lead flow.
+                  Stop paying a monthly retainer for a site that never gets updated. Excalibur builds a polished, mobile-ready small business website for one upfront price—no surprise fees and no endless agency contract.
                 </p>
+                <div className="mt-7 flex flex-wrap items-center gap-3 text-sm font-medium text-slate-700">
+                  <span className="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-white/85 px-4 py-2"><CircleDollarSign className="h-4 w-4 text-blue-600" /> $350 one-time payment</span>
+                  <span className="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-white/85 px-4 py-2"><Sparkles className="h-4 w-4 text-blue-600" /> Only 30 business spots</span>
+                </div>
               </div>
 
               <div className="grid gap-4 md:grid-cols-3">
                 <FeaturePill
                   icon={ArrowRight}
-                  title="Simple next step"
-                  body="One clean form, then the Excalibur team can take it from there."
+                  title="No monthly retainer"
+                  body="Pay once for a website you can be proud to send customers to."
                 />
                 <FeaturePill
                   icon={ShieldCheck}
-                  title="Referral-safe"
-                  body="Affiliate codes stay attached to the lead when this page is shared personally."
+                  title="No ghosted updates"
+                  body="Get a clear, focused site instead of paying each month while nothing changes."
                 />
                 <FeaturePill
                   icon={CheckCircle2}
-                  title="Fast follow-up"
-                  body="Your request lands directly in the shared Excalibur pipeline."
+                  title="Built to earn trust"
+                  body="Give prospective customers the clear information they need to call or reach out."
                 />
               </div>
             </div>
@@ -178,12 +188,12 @@ function App() {
 
           <section className="panel rounded-[2rem] p-6 sm:p-8">
             <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.26em] text-slate-500">Get in touch</p>
+              <p className="text-sm font-semibold uppercase tracking-[0.26em] text-slate-500">Claim a build spot</p>
               <h2 className="mt-3 text-4xl font-semibold tracking-[-0.04em] text-slate-950">
-                Request your free audit
+                Get your $350 website
               </h2>
               <p className="mt-4 text-sm leading-6 text-slate-600">
-                Share a few details and we&apos;ll review your current presence, then send back personalized recommendations.
+                We are opening this offer to just 30 small businesses because the value is unusually high. Share your details to see if there is still a spot for you.
               </p>
             </div>
 
@@ -222,7 +232,7 @@ function App() {
                 required
               />
               <FormSelect
-                label="What do you most need help with?"
+                label="Which sounds most like your situation?"
                 value={form.helpNeeded}
                 onChange={(value) => setForm((current) => ({ ...current, helpNeeded: value }))}
                 options={helpOptions}
@@ -245,7 +255,7 @@ function App() {
                 className="flex w-full items-center justify-center gap-2 rounded-[1.35rem] bg-slate-950 px-5 py-4 text-sm font-semibold text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-70"
               >
                 {loading ? <LoaderCircle className="h-4 w-4 animate-spin" /> : <ArrowRight className="h-4 w-4" />}
-                {submitted ? 'Request sent' : 'Get My Free Audit'}
+                {submitted ? 'Request sent' : 'Claim My $350 Website Spot'}
               </button>
 
               {message ? (
@@ -257,14 +267,14 @@ function App() {
             </form>
 
             <div className="mt-6 rounded-[1.5rem] border border-white/70 bg-white/70 p-5 text-sm text-slate-600 shadow-[0_14px_35px_rgba(83,112,189,0.08)]">
-              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">What your audit includes</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">Why businesses choose this offer</p>
               <ul className="mt-3 space-y-2 pl-5 text-sm leading-6 text-slate-700">
-                <li>Website review for clarity, trust, and conversion friction</li>
-                <li>Google presence check for visibility, reviews, and local SEO basics</li>
-                <li>Call-flow analysis to spot lead handling and response gaps</li>
+                <li>A professional website without an expensive agency bill</li>
+                <li>A clear upfront price: $350 once, not another recurring charge</li>
+                <li>A site designed to make your business look credible and easy to contact</li>
               </ul>
               <p className="mt-4 text-sm leading-6 text-slate-600">
-                Your information is only used to prepare and deliver the audit. No spam and no sharing.
+                We&apos;ll use your information only to follow up on this offer. No spam and no sharing.
               </p>
             </div>
           </section>
