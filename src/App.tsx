@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { ArrowRight, CheckCircle2, CircleDollarSign, LoaderCircle, ShieldCheck, Sparkles } from 'lucide-react';
+import { ArrowRight, CheckCircle2, CircleDollarSign, LoaderCircle, ShieldCheck, Sparkles, TrendingUp } from 'lucide-react';
 import { z } from 'zod';
 import { supabase, supabaseConfigError } from './lib/supabase';
 import excaliburLogo from './assets/excalibur-logo.png';
@@ -164,6 +164,17 @@ function App() {
                   <span className="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-white/85 px-4 py-2"><CircleDollarSign className="h-4 w-4 text-blue-600" /> $350 one-time payment</span>
                   <span className="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-white/85 px-4 py-2"><Sparkles className="h-4 w-4 text-blue-600" /> Only 30 business spots</span>
                 </div>
+                <aside className="mt-7 rounded-[1.5rem] border border-blue-200 bg-white/75 p-5 shadow-[0_14px_35px_rgba(83,112,189,0.08)]">
+                  <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.22em] text-blue-700">
+                    <TrendingUp className="h-4 w-4" /> Our track record
+                  </div>
+                  <p className="mt-3 text-lg font-semibold leading-7 tracking-[-0.02em] text-slate-950">
+                    We helped a client double their monthly new customers in under a month.
+                  </p>
+                  <p className="mt-2 text-sm leading-6 text-slate-600">
+                    That is the kind of focused, high-value work behind this offer—available to qualifying small businesses for a one-time $350 fee.
+                  </p>
+                </aside>
               </div>
 
               <div className="grid gap-4 md:grid-cols-3">
