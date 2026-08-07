@@ -158,10 +158,10 @@ function App() {
                   A website that works for your business. <span className="text-blue-600">$350, once.</span>
                 </h1>
                 <p className="mt-6 max-w-2xl text-base leading-7 text-slate-600 sm:text-lg">
-                  Stop paying a monthly retainer for a site that never gets updated. Excalibur builds a polished, mobile-ready small business website for one upfront price—no surprise fees and no endless agency contract.
+                  Stop paying a monthly retainer for a site that never gets updated. Excalibur builds a polished, mobile-ready small business website for one upfront price. Your total is $350—no surprise fees and no ongoing charge unless you choose an optional low-cost retainer.
                 </p>
                 <div className="mt-7 flex flex-wrap items-center gap-3 text-sm font-medium text-slate-700">
-                  <span className="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-white/85 px-4 py-2"><CircleDollarSign className="h-4 w-4 text-blue-600" /> $350 one-time payment</span>
+                  <span className="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-white/85 px-4 py-2"><CircleDollarSign className="h-4 w-4 text-blue-600" /> $350 total payment</span>
                   <span className="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-white/85 px-4 py-2"><Sparkles className="h-4 w-4 text-blue-600" /> Only 30 business spots</span>
                 </div>
                 <aside className="mt-7 rounded-[1.5rem] border border-blue-200 bg-white/75 p-5 shadow-[0_14px_35px_rgba(83,112,189,0.08)]">
@@ -181,7 +181,7 @@ function App() {
                 <FeaturePill
                   icon={ArrowRight}
                   title="No monthly retainer"
-                  body="Pay once for a website you can be proud to send customers to."
+                  body="The website is $350 total. A low-cost retainer is available only if you explicitly approve it."
                 />
                 <FeaturePill
                   icon={ShieldCheck}
@@ -281,7 +281,8 @@ function App() {
               <p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">Why businesses choose this offer</p>
               <ul className="mt-3 space-y-2 pl-5 text-sm leading-6 text-slate-700">
                 <li>A professional website without an expensive agency bill</li>
-                <li>A clear upfront price: $350 once, not another recurring charge</li>
+                <li>$350 is the full website price, not a deposit or the start of a subscription</li>
+                <li>An optional low-cost retainer is available only with your explicit approval</li>
                 <li>A site designed to make your business look credible and easy to contact</li>
               </ul>
               <p className="mt-4 text-sm leading-6 text-slate-600">
