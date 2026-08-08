@@ -3,6 +3,12 @@ import { ArrowRight, CheckCircle2, CircleDollarSign, LoaderCircle, ShieldCheck, 
 import { z } from 'zod';
 import excaliburLogo from './assets/excalibur-logo.png';
 
+declare global {
+  interface Window {
+    fbq?: (eventType: 'track', eventName: string, parameters?: Record<string, string | number>) => void;
+  }
+}
+
 const helpOptions = [
   'I need a new website',
   'My current website is outdated',
@@ -90,6 +96,11 @@ function App() {
             : 'We could not send your request. Please try again.';
         throw new Error(errorMessage);
       }
+
+      window.fbq?.('track', 'CompleteRegistration', {
+        value: 350.0,
+        currency: 'USD',
+      });
 
       window.localStorage.setItem('excalibur_public_lead_form_last_submission', String(Date.now()));
       setSubmitted(true);
