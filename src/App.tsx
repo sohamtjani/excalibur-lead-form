@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { ArrowRight, CheckCircle2, CircleDollarSign, LoaderCircle, ShieldCheck, Sparkles, TrendingUp } from 'lucide-react';
+import { ArrowRight, CheckCircle2, LoaderCircle, ShieldCheck, Sparkles, TrendingUp } from 'lucide-react';
 import { z } from 'zod';
 import excaliburLogo from './assets/excalibur-logo.png';
 
@@ -143,9 +143,6 @@ function App() {
               <p className="text-[11px] uppercase tracking-[0.32em] text-slate-500">Small business websites</p>
             </div>
           </div>
-          <span className="rounded-full border border-sky-200 bg-white/70 px-4 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-slate-600">
-            30 businesses only
-          </span>
         </nav>
 
         <section className="grid items-stretch gap-6 lg:grid-cols-[1.05fr,0.95fr]">
@@ -161,10 +158,9 @@ function App() {
                   A website that works for your business. <span className="text-blue-600">$350, once.</span>
                 </h1>
                 <p className="mt-6 max-w-2xl text-base leading-7 text-slate-600 sm:text-lg">
-                  Stop paying a monthly retainer for a site that never gets updated. Excalibur builds a polished, mobile-ready small business website for one upfront price. Your total is $350—no surprise fees and no ongoing charge unless you choose an optional low-cost retainer.
+                  Stop paying a monthly retainer for a site that never gets updated. Excalibur builds a polished, mobile-ready website for one upfront price of $350. No surprise fees, no ongoing charge.
                 </p>
                 <div className="mt-7 flex flex-wrap items-center gap-3 text-sm font-medium text-slate-700">
-                  <span className="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-white/85 px-4 py-2"><CircleDollarSign className="h-4 w-4 text-blue-600" /> $350 total payment</span>
                   <span className="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-white/85 px-4 py-2"><Sparkles className="h-4 w-4 text-blue-600" /> Only 30 business spots</span>
                 </div>
                 <aside className="mt-7 rounded-[1.5rem] border border-blue-200 bg-white/75 p-5 shadow-[0_14px_35px_rgba(83,112,189,0.08)]">
@@ -174,9 +170,6 @@ function App() {
                   <p className="mt-3 text-lg font-semibold leading-7 tracking-[-0.02em] text-slate-950">
                     We helped a client double their monthly new customers in under a month.
                   </p>
-                  <p className="mt-2 text-sm leading-6 text-slate-600">
-                    That is the kind of focused, high-value work behind this offer—available to qualifying small businesses for a one-time $350 fee.
-                  </p>
                 </aside>
               </div>
 
@@ -184,17 +177,17 @@ function App() {
                 <FeaturePill
                   icon={ArrowRight}
                   title="No monthly retainer"
-                  body="The website is $350 total. A low-cost retainer is available only if you explicitly approve it."
+                  body="$350 total. A retainer is optional and only added with your approval."
                 />
                 <FeaturePill
                   icon={ShieldCheck}
                   title="No ghosted updates"
-                  body="Get a clear, focused site instead of paying each month while nothing changes."
+                  body="A clear, focused site instead of paying each month for nothing to change."
                 />
                 <FeaturePill
                   icon={CheckCircle2}
                   title="Built to earn trust"
-                  body="Give prospective customers the clear information they need to call or reach out."
+                  body="Clear information so customers can call or reach out."
                 />
               </div>
             </div>
@@ -283,13 +276,12 @@ function App() {
             <div className="mt-6 rounded-[1.5rem] border border-white/70 bg-white/70 p-5 text-sm text-slate-600 shadow-[0_14px_35px_rgba(83,112,189,0.08)]">
               <p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">Why businesses choose this offer</p>
               <ul className="mt-3 space-y-2 pl-5 text-sm leading-6 text-slate-700">
-                <li>A professional website without an expensive agency bill</li>
-                <li>$350 is the full website price, not a deposit or the start of a subscription</li>
-                <li>An optional low-cost retainer is available only with your explicit approval</li>
-                <li>A site designed to make your business look credible and easy to contact</li>
+                <li>A professional website without an agency bill</li>
+                <li>$350 is the full price, not a deposit or a subscription</li>
+                <li>A site built to make your business easy to contact</li>
               </ul>
               <p className="mt-4 text-sm leading-6 text-slate-600">
-                We&apos;ll use your information only to follow up on this offer. No spam and no sharing.
+                We&apos;ll only use your info to follow up on this offer.
               </p>
             </div>
           </section>
